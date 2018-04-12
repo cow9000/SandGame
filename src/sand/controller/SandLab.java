@@ -183,9 +183,11 @@ public class SandLab
 				  int addedCol = 0;
 
 				  for (int[] offset : NEIGHBOURS) {
-				        	if(grid[row+offset[0]][col+offset[1]] == Particles.TREE.returnIndex() || grid[row+offset[0]][col+offset[1]] == Particles.INACTIVE_TREE.returnIndex()  || grid[row+offset[0]][col+offset[1]] == Particles.LEAF.returnIndex() || grid[row+offset[0]][col+offset[1]] == Particles.SAND.returnIndex()) {
+				        	if(grid[row+offset[0]][col+offset[1]] == Particles.GRASS.returnIndex() || grid[row+offset[0]][col+offset[1]] == Particles.TREE.returnIndex() || grid[row+offset[0]][col+offset[1]] == Particles.INACTIVE_TREE.returnIndex()  || grid[row+offset[0]][col+offset[1]] == Particles.LEAF.returnIndex() || grid[row+offset[0]][col+offset[1]] == Particles.SAND.returnIndex()) {
+								if(grid[row+offset[0]][col+offset[1]] == Particles.SAND.returnIndex())  grid[row+offset[0]][col+offset[1]] = Particles.GLASS.returnIndex();
+								else if(grid[row+offset[0]][col+offset[1]] == Particles.WATER.returnIndex())grid[row][col] = Particles.EMPTY.returnIndex();
+								else grid[row+offset[0]][col+offset[1]] = Particles.FIRE.returnIndex();
 								
-								  grid[row+offset[0]][col+offset[1]] = Particles.FIRE.returnIndex();
 				        	}
 		  			}
 			  }

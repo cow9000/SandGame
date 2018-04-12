@@ -179,26 +179,36 @@ public class SandLab
 		  grid[row][col] = Particles.EMPTY.returnIndex();
 		  if(row - 1 > -1 && row + 1 < grid.length) {
 			  if(col - 1 > -1 && col+1 < grid[0].length) {
-				  int addedRow = 0;
-				  int addedCol = 0;
 
 				  for (int[] offset : NEIGHBOURS) {
-				        	if(grid[row+offset[0]][col+offset[1]] == Particles.GRASS.returnIndex() || grid[row+offset[0]][col+offset[1]] == Particles.TREE.returnIndex() || grid[row+offset[0]][col+offset[1]] == Particles.INACTIVE_TREE.returnIndex()  || grid[row+offset[0]][col+offset[1]] == Particles.LEAF.returnIndex() || grid[row+offset[0]][col+offset[1]] == Particles.SAND.returnIndex()) {
+				        	if(grid[row+offset[0]][col+offset[1]] == Particles.GRASS.returnIndex() || grid[row+offset[0]][col+offset[1]] == Particles.TREE.returnIndex() || grid[row+offset[0]][col+offset[1]] == Particles.INACTIVE_TREE.returnIndex()  || grid[row+offset[0]][col+offset[1]] == Particles.LEAF.returnIndex() || grid[row+offset[0]][col+offset[1]] == Particles.SAND.returnIndex() || grid[row+offset[0]][col+offset[1]] == Particles.WATER.returnIndex()) {
 								if(grid[row+offset[0]][col+offset[1]] == Particles.SAND.returnIndex())  grid[row+offset[0]][col+offset[1]] = Particles.GLASS.returnIndex();
-								else if(grid[row+offset[0]][col+offset[1]] == Particles.WATER.returnIndex()) {
-									
-									 for (int[] waterOffset : NEIGHBOURS) {
-										 if(grid[row+waterOffset[0]][col+waterOffset[1]] == Particles.WATER.returnIndex()) {
-											 grid[row+offset[0]][col+offset[1]] = Particles.STEAM.returnIndex();
-										 }
-									 }
-									
-									break;
-								}
+								else if(grid[row+offset[0]][col+offset[1]] == Particles.WATER.returnIndex()) { grid[row+offset[0]][col+offset[1]] = Particles.STEAM.returnIndex(); break;}
 								else grid[row+offset[0]][col+offset[1]] = Particles.FIRE.returnIndex();
 								
 				        	}
 		  			}
+			  }
+		  }
+	  }else if(grid[row][col] == Particles.STEAM.returnIndex()) {
+		  if(row < 4) {
+			  grid[row][col] = Particles.EMPTY.returnIndex();
+		  }else {
+			  if(direction == 0) {
+				  if(row-1 > -1) {
+					  grid[row][col] = grid[row-1][col];
+					  grid[row-1][col] = Particles.STEAM.returnIndex();
+				  }
+			  }else if(direction == 1) {
+				  if(col+1 > grid[0].length) {
+					  grid[row][col+1] = grid[row][col+1];
+					  grid[row][col] = Particles.STEAM.returnIndex();
+				  }
+			  }else {
+				if(col-1 > -1) {
+					grid[row][col] = grid[row][col-1];
+					grid[row][col-1] = Particles.STEAM.returnIndex();		  
+				  }
 			  }
 		  }
 	  }

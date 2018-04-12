@@ -10,6 +10,11 @@ public class SandLab
 
   public static int particleIndex = 0;
   
+  private static final int[][] NEIGHBOURS = {
+		    {-1, -1}, {-1, 0}, {-1, +1},
+		    { 0, -1},          { 0, +1},
+		    {+1, -1}, {+1, 0}, {+1, +1}};
+  
   public static enum Particles {
 	   EMPTY("Empty", new Color(0, 191, 255)), METAL("Metal", Color.GRAY), SAND("Sand", Color.YELLOW), WATER("Water", Color.BLUE), BOMB("Bomb", Color.RED), TREE("Tree", new Color(83,49,35)), INACTIVE_TREE("Inactive Tree", new Color(83,49,35)), LEAF("Leaf",Color.GREEN), GRASS("Grass",new Color(85, 107, 47)), FIRE("Fire", new Color(255, 140, 0)), GLASS("Glass", Color.WHITE);
 
@@ -171,15 +176,18 @@ public class SandLab
 			  grid[row][col-1] = Particles.LEAF.returnIndex();
 		  }
 	  }else if(grid[row][col] == Particles.FIRE.returnIndex()) {
-		  if(row - 1 > -1 && row+1 < grid.length) {
+		  grid[row][col] = Particles.EMPTY.returnIndex();
+		  if(row - 1 > -1 && row + 1 < grid.length) {
 			  if(col - 1 > -1 && col+1 < grid[0].length) {
-				  int addedRow = 1;
+				  int addedRow = 0;
 				  int addedCol = 0;
-				  for(int i = 0; i < 8; i++) {
-					  if(grid[row+addedRow][col+addedCol] == Particles.LEAF.returnIndex() || grid[row+addedRow][col+addedCol] == Particles.LEAF.returnIndex()  || grid[row+addedRow][col+addedCol] == Particles.LEAF.returnIndex() || grid[row+addedRow][col+addedCol] == Particles.GLASS.returnIndex()) {
-						  
-					  }
-				  }
+
+				  for (int[] offset : NEIGHBOURS) {
+				        	if(grid[row+offset[0]][col+offset[1]] == Particles.TREE.returnIndex() || grid[row+offset[0]][col+offset[1]] == Particles.INACTIVE_TREE.returnIndex()  || grid[row+offset[0]][col+offset[1]] == Particles.LEAF.returnIndex() || grid[row+offset[0]][col+offset[1]] == Particles.SAND.returnIndex()) {
+								
+								  grid[row+offset[0]][col+offset[1]] = Particles.FIRE.returnIndex();
+				        	}
+		  			}
 			  }
 		  }
 	  }

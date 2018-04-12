@@ -11,7 +11,7 @@ public class SandLab
   public static int particleIndex = 0;
   
   public static enum Particles {
-	   EMPTY("Empty", Color.BLACK), METAL("Metal", Color.GRAY), SAND("Sand", Color.YELLOW), WATER("Water", Color.BLUE);
+	   EMPTY("Empty", new Color(0, 191, 255)), METAL("Metal", Color.GRAY), SAND("Sand", Color.YELLOW), WATER("Water", Color.BLUE), BOMB("Bomb", Color.RED), TREE("Tree", new Color(83,49,35)), INACTIVE_TREE("Inactive Tree", new Color(83,49,35)), LEAF("Leaf",Color.GREEN), GRASS("Grass",new Color(85, 107, 47)), FIRE("Fire", new Color(255, 140, 0)), GLASS("Glass", Color.WHITE);
 
 	   int index;
 	   String name;
@@ -145,7 +145,46 @@ public class SandLab
 				  }
 			  }
 		  }
+	  }else if(grid[row][col] == Particles.BOMB.returnIndex()) {
+
+		  grid[row][col] = Particles.EMPTY.returnIndex();
+		  
+		  if(row - 1 > -1) {
+			  grid[row-1][col] = Particles.BOMB.returnIndex();
+			  if(col - 1 > -1) {
+				  grid[row][col-1] = Particles.BOMB.returnIndex();
+			  }
+		  }
+	  }else if(grid[row][col] == Particles.TREE.returnIndex()) {
+		  int treeGrowth = (int) (Math.random() * 3) - 1;
+		  if(row-1 < grid.length && row-1 > -1 && col+1 < grid[0].length && col-1 > -1) {
+			  if(!(grid[row][col-1] == Particles.TREE.returnIndex() || grid[row][col-1] == Particles.INACTIVE_TREE.returnIndex()) && !(grid[row][col-1] == Particles.TREE.returnIndex() || grid[row][col+1] == Particles.INACTIVE_TREE.returnIndex())) {
+				  grid[row-1][col+treeGrowth] = Particles.TREE.returnIndex();
+				  if((int) (Math.random()*5) > 1) {
+					  grid[row][col] = Particles.INACTIVE_TREE.returnIndex();
+				  }
+			  }
+		  }
+		  //Grow leafs
+		  if(col+1 < grid[0].length && col-1 > -1 && row < 5) {
+			  grid[row][col+1] = Particles.LEAF.returnIndex();
+			  grid[row][col-1] = Particles.LEAF.returnIndex();
+		  }
+	  }else if(grid[row][col] == Particles.FIRE.returnIndex()) {
+		  if(row - 1 > -1 && row+1 < grid.length) {
+			  if(col - 1 > -1 && col+1 < grid[0].length) {
+				  int addedRow = 1;
+				  int addedCol = 0;
+				  for(int i = 0; i < 8; i++) {
+					  if(grid[row+addedRow][col+addedCol] == Particles.LEAF.returnIndex() || grid[row+addedRow][col+addedCol] == Particles.LEAF.returnIndex()  || grid[row+addedRow][col+addedCol] == Particles.LEAF.returnIndex() || grid[row+addedRow][col+addedCol] == Particles.GLASS.returnIndex()) {
+						  
+					  }
+				  }
+			  }
+		  }
 	  }
+	  
+	  
 	  
 	  
     

@@ -16,7 +16,7 @@ public class SandLab
 		    {+1, -1}, {+1, 0}, {+1, +1}};
   
   public static enum Particles {
-	   EMPTY("Empty", new Color(0, 191, 255)), METAL("Metal", Color.GRAY), SAND("Sand", Color.YELLOW), WATER("Water", Color.BLUE), BOMB("Bomb", Color.RED), TREE("Tree", new Color(83,49,35)), INACTIVE_TREE("Inactive Tree", new Color(83,49,35)), LEAF("Leaf",Color.GREEN), GRASS("Grass",new Color(85, 107, 47)), FIRE("Fire", new Color(255, 140, 0)), GLASS("Glass", Color.WHITE);
+	   EMPTY("Empty", new Color(0, 191, 255)), METAL("Metal", Color.GRAY), SAND("Sand", Color.YELLOW), WATER("Water", Color.BLUE), BOMB("Bomb", Color.RED), TREE("Tree", new Color(83,49,35)), INACTIVE_TREE("Inactive Tree", new Color(83,49,35)), LEAF("Leaf",Color.GREEN), GRASS("Grass",new Color(85, 107, 47)), FIRE("Fire", new Color(255, 140, 0)), GLASS("Glass", Color.WHITE), STEAM("Steam", Color.LIGHT_GRAY);
 
 	   int index;
 	   String name;
@@ -185,7 +185,16 @@ public class SandLab
 				  for (int[] offset : NEIGHBOURS) {
 				        	if(grid[row+offset[0]][col+offset[1]] == Particles.GRASS.returnIndex() || grid[row+offset[0]][col+offset[1]] == Particles.TREE.returnIndex() || grid[row+offset[0]][col+offset[1]] == Particles.INACTIVE_TREE.returnIndex()  || grid[row+offset[0]][col+offset[1]] == Particles.LEAF.returnIndex() || grid[row+offset[0]][col+offset[1]] == Particles.SAND.returnIndex()) {
 								if(grid[row+offset[0]][col+offset[1]] == Particles.SAND.returnIndex())  grid[row+offset[0]][col+offset[1]] = Particles.GLASS.returnIndex();
-								else if(grid[row+offset[0]][col+offset[1]] == Particles.WATER.returnIndex())grid[row][col] = Particles.EMPTY.returnIndex();
+								else if(grid[row+offset[0]][col+offset[1]] == Particles.WATER.returnIndex()) {
+									
+									 for (int[] waterOffset : NEIGHBOURS) {
+										 if(grid[row+waterOffset[0]][col+waterOffset[1]] == Particles.WATER.returnIndex()) {
+											 grid[row+offset[0]][col+offset[1]] = Particles.STEAM.returnIndex();
+										 }
+									 }
+									
+									break;
+								}
 								else grid[row+offset[0]][col+offset[1]] = Particles.FIRE.returnIndex();
 								
 				        	}
